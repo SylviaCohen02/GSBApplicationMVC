@@ -1,0 +1,316 @@
+<?php
+/**
+ * Fonctions pour l'application GSB
+ *
+ * PHP Version 7
+ *
+ * @category  PPE
+ * @package   GSB
+ * @author    Lycée Beth Sefer
+ * @author    Sylvia COHEN
+ */
+
+
+/**
+ * Teste si un quelconque utilisateur (=visiteur ou comptable) est connecté
+ * @return vrai ou faux
+ */
+
+function estConnecte()
+{
+  return isset($_SESSION['idUtilisateur']) ;
+}
+
+/**
+* Teste si un comptable est connecté
+* @return vrai ou faux
+* Si vrai, enregistre le statut comptable dans une varaible SESSION
+*/
+function estComptableConnecte(){
+   if (estConnecte()){//on fait un if sur estConnecte() et pas sur la variable idUtilisateur car
+   return $_SESSION['statut']=='comptable';//selon le statut on peut savoir si c un visiteur ou un comptable
+ 
+   }
+}
+
+/**
+* Teste si un comptable est connecté
+* @return vrai ou faux
+* Si vrai, enregistre le statut comptable dans une varaible SESSION
+*/
+function estVisiteurConnecte(){
+   if (estConnecte()){
+   return $_SESSION['statut']=='visiteur';
+   }
+}
+
+
+
+/**
+ * Enregistre dans une variable session les infos d'un visiteur ou d'un comptable
+ *
+ * @param String $idUtilisateur ID de l'utilisateur (=visiteur ou comptable)
+ * @param String $nom        Nom de l'utilisateur
+ * @param String $prenom     Prénom de l'utilisateur
+ * @param String $statut
+ * @return null
+ */
+function connecter($idUtilisateur, $nom, $prenom, $statut)
+{
+    
+        $_SESSION['idUtilisateur'] = $idUtilisateur;// la SESSION est une grde variable 'super globale' qui où on peut mettre plein de variables
+        $_SESSION['nom'] = $nom;//on rentre le nom dans le tableau (de la bdd)
+        $_SESSION['prenom'] = $prenom;
+        $_SESSION['statut'] = $statut;//on rentre le statut dans la variable SESSION (=visiteur ou comptable)
+}
+
+
+/**
+ * Détruit la session active
+ *
+ * @return null
+ */
+function deconnecter()
+{
+    session_destroy();
+}
+
+/**
+ * Transforme une date au format français jj/mm/aaaa vers le format anglais
+ * aaaa-mm-jj
+ *
+ * @param String $maDate au format  jj/mm/aaaa
+ *
+ * @return Date au format anglais aaaa-mm-jj
+ */
+function dateFrancaisVersAnglais($maDate)
+{
+    @list($jour, $mois, $annee) = explode('/', $maDate);
+    return date('Y-m-d', mktime(0, 0, 0, $mois, $jour, $annee));
+}
+
+/**
+ * Transforme une date au format format anglais aaaa-mm-jj vers le format
+ * français jj/mm/aaaa
+ *
+ * @param String $maDate au format  aaaa-mm-jj
+ *
+ * @return Date au format format français jj/mm/aaaa
+ */
+function dateAnglaisVersFrancais($maDate)
+{
+    @list($annee, $mois, $jour) = explode('-', $maDate);
+    $date = $jour . '/' . $mois . '/' . $annee;
+    return $date;
+}
+
+/**
+ * Retourne le mois au format aaaamm selon le jour dans le mois
+ *
+ * @param String $date au format  jj/mm/aaaa
+ *
+ * @return String Mois au format aaaamm
+ */
+function getMois($date)
+{
+    @list($jour, $mois, $annee) = explode('/', $date);
+    unset($jour);//retire la variale jour pour obtenir le mois et l'année.
+    if (strlen($mois) == 1) {//strlen=verifie le nombre de caractères. Ex:si mois=6, on va mettre 06.
+        $mois = '0' . $mois;
+    }
+    return $annee . $mois;
+}
+
+
+/* gestion des erreurs */
+
+/**
+ * Indique si une valeur est un entier positif ou nul
+ *
+ * @param Integer $valeur Valeur
+ *
+ * @return Boolean vrai ou faux
+ */
+function estEntierPositif($valeur)
+{
+    return preg_match('/[^0-9]/', $valeur) == 0;//elle vérifie si le nb est positif ou non
+}
+
+/**
+ * Indique si un tableau de valeurs est constitué d'entiers positifs ou nuls
+ *
+ * @param Array $tabEntiers Un tableau d'entier
+ *
+ * @return Boolean vrai ou faux
+ */
+function estTableauEntiers($tabEntiers)//a la base c le tableau les frais
+{
+    $boolReturn = true;//par défaut c égal à vrai
+    foreach ($tabEntiers as $unEntier) {
+        if (!estEntierPositif($unEntier)) {//s'il n'est pas positif
+            $boolReturn = false;//on retourne faux
+        }
+    }
+    return $boolReturn;
+}
+
+/**
+ * Vérifie si une date est inférieure d'un an à la date actuelle
+ *
+ * @param String $dateTestee Date à tester
+ *
+ * @return Boolean vrai ou faux
+ */
+function estDateDepassee($dateTestee)
+{
+    $dateActuelle = date('d/m/Y');
+    @list($jour, $mois, $annee) = explode('/', $dateActuelle);
+    $annee--;
+    $anPasse = $annee . $mois . $jour;
+    @list($jourTeste, $moisTeste, $anneeTeste) = explode('/', $dateTestee);
+    return ($anneeTeste . $moisTeste . $jourTeste < $anPasse);
+}
+
+/**
+ * Vérifie la validité du format d'une date française jj/mm/aaaa
+ *
+ * @param String $date Date à tester
+ *
+ * @return Boolean vrai ou faux
+ */
+function estDateValide($date)
+{
+    $tabDate = explode('/', $date);
+    $dateOK = true;
+    if (count($tabDate) != 3) {
+        $dateOK = false;
+    } else {
+        if (!estTableauEntiers($tabDate)) {
+            $dateOK = false;
+        } else {
+            if (!checkdate($tabDate[1], $tabDate[0], $tabDate[2])) {
+                $dateOK = false;
+            }
+        }
+    }
+    return $dateOK;
+}
+
+/**
+ * Vérifie que le tableau de frais ne contient que des valeurs numériques
+ *
+ * @param Array $lesFrais Tableau d'entier
+ *
+ * @return Boolean vrai ou faux
+ */
+function lesQteFraisValides($lesFrais)//vérifie le nb de chaque case du tableau si positif ou négatif
+{
+    return estTableauEntiers($lesFrais);
+}
+
+/**
+ * Vérifie la validité des trois arguments : la date, le libellé du frais
+ * et le montant
+ *
+ * Des message d'erreurs sont ajoutés au tableau des erreurs
+ *
+ * @param String $dateFrais Date des frais
+ * @param String $libelle   Libellé des frais
+ * @param Float  $montant   Montant des frais
+ *
+ * @return null
+ */
+function valideInfosFrais($dateFrais, $libelle, $montant)
+{
+    if ($dateFrais == '') {
+        ajouterErreur('Le champ date ne doit pas être vide');
+    } else {
+        if (!estDatevalide($dateFrais)) {
+            ajouterErreur('Date invalide');
+        } else {
+            if (estDateDepassee($dateFrais)) {
+                ajouterErreur(
+                    "date d'enregistrement du frais dépassé, plus de 1 an"
+                );
+            }
+        }
+    }
+    if ($libelle == '') {
+        ajouterErreur('Le champ description ne peut pas être vide');
+    }
+    if ($montant == '') {
+        ajouterErreur('Le champ montant ne peut pas être vide');
+    } elseif (!is_numeric($montant)) {
+        ajouterErreur('Le champ montant doit être numérique');
+    }
+}
+
+/**
+ * Ajoute le libellé d'une erreur au tableau des erreurs
+ *
+ * @param String $msg Libellé de l'erreur
+ *
+ * @return null
+ */
+function ajouterErreur($msg)
+{
+    if (!isset($_REQUEST['erreurs'])) {
+        $_REQUEST['erreurs'] = array();
+    }
+    $_REQUEST['erreurs'][] = $msg;
+}
+
+/**
+ * Retoune le nombre de lignes du tableau des erreurs
+ *
+ * @return Integer le nombre d'erreurs
+ */
+function nbErreurs()
+{
+    if (!isset($_REQUEST['erreurs'])) {
+        return 0;
+    } else {
+        return count($_REQUEST['erreurs']);
+    }
+}
+
+function getlesDouzeDerniersMois($mois) 
+{
+    $lesMois = array ();
+    for ( $i=0 ; $i<=12 ; $i++) {
+        $mois = getLeMoisPrecedent($mois) ;
+        $numAnnee = substr($mois, 0, 4);//declarer la variable numAnnee 
+        $numMois = substr($mois, 4, 2);//declarer la variable numMois meme si on 
+        //a deja fait ca ds getLeMoisPrecedent car apres on les utilise
+        // dans le array
+    
+        $lesMois[] = array(//tableau avec 3 colonnes 
+             'mois' => $mois,
+             'numMois' => $numMois,
+             'numAnnee' => $numAnnee
+            
+         );
+    }
+    return $lesMois;
+    //$lesIdFrais = $this->getLesIdFrais();
+}
+
+function getLeMoisPrecedent($mois)
+{
+   $numAnnee = substr($mois, 0, 4);
+   $numMois = substr($mois, 4, 2);
+   if ($numMois == '01') {
+       $numMois = '12';
+       $numAnnee--;//on decremente l'annee de 1 
+   } else {
+       $numMois--;//on decremente le mois de 1
+   }
+   if (strlen($numMois) == 1) {//si la longueur de la chaine numMois est égale
+       // à 1, on ajoute 0 devant
+       $numMois = '0' . $numMois;
+   }
+   return $numAnnee . $numMois;  
+}
+
+?>
+
