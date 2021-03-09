@@ -234,25 +234,21 @@ class PdoGsb
     }
 
     public function majFraisHorsForfait($idVisiteur, $mois, $idFHF, $libelle, 
-            $date, $montant)//il va boucler sur le tableau les cles qui contient les cles. Chacune des lignes=> idFrais
+            $date, $montant)
     {
-       //array ca veut dire tableau
-       //boucle foreach=>parcourir le tableau : pr chaque ligne du tableau lesCles
             
-            $requetePrepare = PdoGSB::$monPdo->prepare(//mettre à jour la table lignfraisforfait en mettant la valeur de la variable $qte (pr chaque idFrais)
+            $requetePrepare = PdoGSB::$monPdo->prepare(
                 'UPDATE lignefraishorsforfait '
                 . 'SET lignefraishorsforfait.libelle = :unLibelle '
                  .'lignefraishorsforfait.date = :uneDate '
                  .'lignefraishorsforfait.montant = :unMontant '
                 . 'WHERE lignefraishorsforfait.idVisiteur = :unIdVisiteur '
                 . 'AND lignefraishorsforfait.mois = :unMois '
-               
-                 . 'AND lignefraishorsforfait.id ='
-                    . '  :idFraisHorsForfait'
+                . 'AND lignefraishorsforfait.id =:unIdFraisHF'
             );
             $requetePrepare->bindParam(':unIdVisiteur ', $idVisiteur, PDO::PARAM_STR);
             $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
-            $requetePrepare->bindParam(':unIdFrais', $idFHF, PDO::PARAM_INT);
+            $requetePrepare->bindParam(':unIdFraisHF', $idFHF, PDO::PARAM_INT);
             $requetePrepare->bindParam(':unLibelle', $libelle, PDO::PARAM_STR);
             $requetePrepare->bindParam(':uneDate ', $date, PDO::PARAM_STR);
             $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT);//INT? car n'existe pas float           
@@ -578,6 +574,20 @@ class PdoGsb
        $requetePrepare->execute();
        return $requetePrepare->fetchAll();
    }
+   
+   //suivrePaiement
+   public function getLesFichesFrais()
+   {
+       $requetePrepare = PdoGsb::$monPdo->prepare(
+           'SELECT *'
+           . 'FROM ficheFrais '
+           . 'ORDER BY nom'
+               .'WHERE etat.fiche= CL'
+       );
+       $requetePrepare->execute();
+       return $requetePrepare->fetchAll();
+   }
+  
   
   public function majEtatVAFicheFrais($idVisiteur, $mois, $etat){
        $requetePrepare = PdoGSB::$monPdo->prepare(
@@ -596,20 +606,7 @@ class PdoGsb
         return $laLigne2;
       }
       
-      public function getNomPrenomVisiteur($idVisiteur){
-          $requetePrepare = PdoGSB::$monPdo->prepare(
-          'SELECT  visiteur.id AS id,'
-          . 'visiteur.nom as nom,'
-          . 'visiteur.prenom as prenom'
-          . 'FROM visiteur'  
-          .'WHERE visiteur.idvisiteur = $idVisiteur '
-                  
-          );
-          $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
-          $requetePrepare->execute();
-          $laLigne3 = $requetePrepare->fetch();
-        return $laLigne3;
-      }
+     
     
 
 
