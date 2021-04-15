@@ -23,6 +23,8 @@ case 'demandeConnexion':
 case 'valideConnexion':
     $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_STRING);//on fait un filter input sur la variable login pr récupérer sa valeur
     $mdp = filter_input(INPUT_POST, 'mdp', FILTER_SANITIZE_STRING);
+    
+    
     $visiteur = $pdo->getInfosVisiteur($login, $mdp);//on va dans la classe pdo gsb, la méthode getInfosVisiteur() ac en param le $login et le $mdp
     $comptable = $pdo-> getInfosComptable ($login, $mdp);
     

@@ -102,7 +102,7 @@
                                 </a>
                             </li>
                             <li <?php if ($uc == 'suivrePaiementFrais') { ?>class="active"<?php } ?>>
-                                <a href="index.php?uc=suivrePaiementFrais">
+                                <a href="index.php?uc=suivrePaiementFrais&action=selectionnerVisiteurMois">
                                     <spanComptable class="glyphicon glyphicon-euro"></spanComptable>
                                     Suivre le paiement d'une fiche de frais
                                 </a>

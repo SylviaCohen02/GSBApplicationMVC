@@ -1,21 +1,13 @@
 <?php
 /**
- * Index du projet
-
- GSB
+ * Vue Liste des mois
  *
  * PHP Version 7
  *
  * @category  PPE
  * @package   GSB
- * @author    Réseau CERTA <contact@reseaucerta.org>
- * @author    Sylvia Cohen <tsyviaco@gmail.com>
- * @copyright 2017 Réseau CERTA
- * @license   Réseau CERTA
- * @version   GIT: <0>
- * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
+ * @author    Beth Sefer, Sylvia Cohen
  */
-
 require_once 'includes/fct.inc.php';//require = > erreur fatale , arrêt de l'exécution du programme, once=> on l'ajoute une seule fois
 				    //fct => fct simples
 require_once 'includes/class.pdogsb.inc.php';//fichier dont on a besoin une partie, fichier intégré ds ce fichier
