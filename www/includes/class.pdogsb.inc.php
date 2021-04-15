@@ -7,35 +7,9 @@
  *
  * @category  PPE
  * @package   GSB
- * @author    Cheri Bibi - Réseau CERTA <contact@reseaucerta.org>
- * @author    José GIL - CNED <jgil@ac-nice.fr>
- * @copyright 2017 Réseau CERTA
- * @license   Réseau CERTA
- * @version   GIT: <0>
- * @link      http://www.php.net/manual/fr/book.pdo.php PHP Data Objects sur php.net
+ * @author    beth sefer, Sylvia Cohen- tsyviaco@gmail.com
  */
 
-/**
- * Classe d'accès aux données.
- *
- * Utilise les services de la classe PDO
- * pour l'application GSB
- * Les attributs sont tous statiques,
- * les 4 premiers pour la connexion
- * $monPdo de type PDO
- * $monPdoGsb qui contiendra l'unique instance de la classe
- *
- * PHP Version 7
- *
- * @category  PPE
- * @package   GSB
- * @author    Cheri Bibi - Réseau CERTA <contact@reseaucerta.org>
- * @author    José GIL <jgil@ac-nice.fr>
- * @copyright 2017 Réseau CERTA
- * @license   Réseau CERTA
- * @version   Release: 1.0
- * @link      http://www.php.net/manual/fr/book.pdo.php PHP Data Objects sur php.net
- */
 class PdoGsb {
 
     private static $serveur = 'mysql:host=localhost'; //propriété
@@ -199,6 +173,7 @@ class PdoGsb {
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
         return $requetePrepare->fetchAll();
+        
     }
 
     /**
@@ -227,10 +202,10 @@ class PdoGsb {
      *
      * @return null
      */
-    public function majFraisForfait($idVisiteur, $mois, $lesFrais) {//il va boucler sur le tableau les cles qui contient les cles. Chacune des lignes=> idFrais
-        $lesCles = array_keys($lesFrais); //array ca veut dire tableau
+    public function majFraisForfait($idVisiteur, $mois, $lesFraisForfait) {//il va boucler sur le tableau les cles qui contient les cles. Chacune des lignes=> idFrais
+        $lesCles = array_keys($lesFraisForfait); //array ca veut dire tableau
         foreach ($lesCles as $unIdFrais) {//boucle foreach=>parcourir le tableau : pr chaque ligne du tableau lesCles
-            $qte = $lesFrais[$unIdFrais]; //pr chaque un idFrais, (=une ligne du tableau "lesFrais) je mets le resultat de la ligne de "idFrais" ds la variable $qte
+            $qte = $lesFraisForfait[$unIdFrais]; //pr chaque un idFrais, (=une ligne du tableau "lesFrais) je mets le resultat de la ligne de "idFrais" ds la variable $qte
             $requetePrepare = PdoGSB::$monPdo->prepare(//mettre à jour la table lignfraisforfait en mettant la valeur de la variable $qte (pr chaque idFrais)
                     'UPDATE lignefraisforfait '
                     . 'SET lignefraisforfait.quantite = :uneQte '
@@ -267,7 +242,7 @@ class PdoGsb {
         $requetePrepare->bindParam(':unIdFrais', $idFHF, PDO::PARAM_INT);
         $requetePrepare->bindParam(':unLibelle', $libelle, PDO::PARAM_STR);
         $requetePrepare->bindParam(':uneDate ', $dateFR, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_INT); //INT? car n'existe pas float           
+        $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_STR); //INT? car n'existe pas float           
         $requetePrepare->execute();
     }
 

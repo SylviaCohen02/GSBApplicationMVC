@@ -96,7 +96,7 @@
                 }
                 ?> 
                 <button class="btn btn-success" type="submit">Corriger</button>       
-                <button class="btn btn-danger" type="reset">Reinitialiser</button>
+                <button class="btn btn-danger" type="reset">Réinitialiser</button>
             </fieldset>
 
         </div>

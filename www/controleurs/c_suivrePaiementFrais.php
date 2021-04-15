@@ -31,9 +31,9 @@ case 'selectionnerVisiteurMois':
 
 case 'afficherFrais':
     
-    var_dump($idVisiteur);
     $idVisiteur=filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
     $leMois = filter_input(INPUT_POST, 'lstMois', FILTER_SANITIZE_STRING);
+    
     $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur, $leMois);
     $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $leMois);
     $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur, $leMois);
@@ -45,6 +45,8 @@ case 'afficherFrais':
     $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
     include'vues/v_etatFrais.php';
     break;
+
+
     
     
 }

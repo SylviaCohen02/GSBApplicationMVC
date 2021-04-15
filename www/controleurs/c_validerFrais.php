@@ -41,6 +41,7 @@ case 'selectionnerVisiteurMois':
 
         $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($Visiteur, $Mois); //pq cette methode?
         $lesFraisForfait = $pdo->getLesFraisForfait($Visiteur, $Mois);
+        
         $FraisHorsForfait = $pdo->getLesFraisHorsForfait($Visiteur, $Mois);
         $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
         if (!is_array($lesInfosFicheFrais)) {
