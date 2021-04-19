@@ -6,8 +6,7 @@
  *
  * @category  PPE
  * @package   GSB
- * @author    Lycée Beth Sefer
- * @author    Sylvia COHEN
+ * @author    beth sefer,Sylvia Cohen
  */
 
 

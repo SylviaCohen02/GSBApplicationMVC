@@ -1,13 +1,12 @@
 <?php
 /**
- * Vue Entête
+ * Vue en-tête
  *
  * PHP Version 7
  *
  * @category  PPE
  * @package   GSB
- * @author    Lycée Beth Sefer
- * @author    Sylvia COHEN
+ * @author    beth sefer,Sylvia Cohen
  */
 ?>
 <!DOCTYPE html>

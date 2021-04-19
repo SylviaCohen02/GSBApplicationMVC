@@ -43,9 +43,13 @@ case 'afficherFrais':
     $montantValide = $lesInfosFicheFrais['montantValide'];
     $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
     $dateModif = dateAnglaisVersFrancais($lesInfosFicheFrais['dateModif']);
-    include'vues/v_etatFrais.php';
+    include'vues/v_miseEnPaiement.php';
     break;
 
+
+case 'mettreEnPaiement':
+    
+    break;
 
     
     

@@ -95,7 +95,7 @@ case 'selectionnerVisiteurMois':
         $idFHF = filter_input(INPUT_POST, 'idFraisHF', FILTER_SANITIZE_NUMBER_INT); //NUMBER_INT)
         $libelle = filter_input(INPUT_POST, 'libelle', FILTER_SANITIZE_STRING);
         $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
-        $montant = filter_input(INPUT_POST, 'montant', FILTER_SANITIZE_NUMBER_INT);
+        $montant = filter_input(INPUT_POST, 'montant', FILTER_SANITIZE_STRING);
         
         var_dump($idVisiteur, $leMois, $idFHF, $libelle, $date,
                 $montant);
@@ -106,7 +106,7 @@ case 'selectionnerVisiteurMois':
                 ajouterErreur('Les valeurs contiennent une erreur');
                 include'vues/v_erreurs';
             } else {
-                $pdo->majFraisHorsForfait($idVisiteur, $leMois, $idFHF, $libelle, $date,
+                $pdo->majFHF($idVisiteur, $leMois, $idFHF, $libelle, $date,
                         $montant);
                 echo "La modification a bien été prise en compte.";
             }
@@ -144,15 +144,16 @@ case 'selectionnerVisiteurMois':
         if (!$nbJustificatifs) {
             $pdo->majEtatFicheFrais($idVisiteur, $mois, 'VA');
             echo "Cette fiche a été validée";
-        } else {
-            ajouterErreur('Les valeurs contiennent une erreur'); //ou
-            include'vues/v_erreurs.php';
+       // } else {
+         //   ajouterErreur('Les valeurs contiennent une erreur'); //ou
+          //  include'vues/v_erreurs.php';
         }
         
         $sommeFHF = $pdo->calculSommeFraisHorsForfait($idVisiteur, $mois);
         $sommeFraisForfait = $pdo->calculSommeFraisForfait($idVisiteur, $mois);       
         $sommeTotale = $sommeFHF + $sommeFraisForfait;
         $pdo ->montantValide($idVisiteur, $mois, $sommeTotale);
+        //voir fichier test 
         break;
 }
 

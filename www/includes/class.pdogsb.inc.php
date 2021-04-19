@@ -238,12 +238,45 @@ class PdoGsb {
                 . 'AND lignefraishorsforfait.id =:unIdFrais'
         );
         $requetePrepare->bindParam(':unIdVisiteur ', $idVisiteur, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $leMois, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unIdFrais', $idFHF, PDO::PARAM_INT);
         $requetePrepare->bindParam(':unLibelle', $libelle, PDO::PARAM_STR);
         $requetePrepare->bindParam(':uneDate ', $dateFR, PDO::PARAM_STR);
-        $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_STR); //INT? car n'existe pas float           
-        $requetePrepare->execute();
+        $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_STR);           
+        if($requetePrepare->execute()){
+        echo 'succes';
+        
+        }else{
+            echo 'erreur';
+            print_r($requetePrepare->errorInfo());
+        }
+    }
+    
+    public function majFHF($idVisiteur, $leMois, $idFHF, $libelle, $date,
+            $montant){
+        $dateFR= dateFrancaisVersAnglais($date);
+        $requetePrepare= PdoGSB::$monPdo->prepare(
+                'UPDATE lignefraishorsforfait'
+                ." SET lignefraishorsforfait.libelle= $libelle"
+                ." lignefraishorsforfait.date= $date"
+                ." lignefraishorsforfait.montant = $montant"
+                ." WHERE lignefraishorsforfait.idvisiteur = $idVisiteur"
+                ." AND lignefraishorsforfait.mois = $leMois"
+                ." AND lignefraishorsforfait.id = $idFHF"
+                
+                );
+        
+        /*
+         * $requetePrepare->bindParam(':unIdVisiteur, $idVisiteur, PDO::PARAM_STR);
+         
+        *$requetePrepare->bindParam(':unMois', $leMois, PDO::PARAM_STR);
+        *$requetePrepare->bindParam(':unIdFrais', $idFHF, PDO::PARAM_STR);
+        *$requetePrepare->bindParam(':unLibelle', $libelle, PDO::PARAM_STR);
+        *$requetePrepare->bindParam(':uneDate ', $dateFR, PDO::PARAM_STR);
+       * $requetePrepare->bindParam(':unMontant', $montant, PDO::PARAM_STR);           
+        *$requetePrepare-> execute();    
+         * 
+         */    
     }
 
     public function majLibelleFHF($idFHF) {//il va boucler sur le tableau les cles qui contient les cles. Chacune des lignes=> idFrais
@@ -565,7 +598,7 @@ class PdoGsb {
 
     public function calculSommeFraisForfait($idVisiteur, $mois) {
         $requetePrepare = PdoGsb::$monPdo->prepare(
-                'SELECT SUM( lignefraisforfait.quantite *lignefraisforfait.montant)'
+                'SELECT SUM( lignefraisforfait.quantite *fraisforfait.montant)'
                 . 'FROM lignefraisforfait JOIN fraisforfait'
                 . 'ON idfraisforfait = id'
                 . 'WHERE lignefraisforfait.idvisiteur = :unIdVisiteur '
@@ -583,13 +616,31 @@ class PdoGsb {
     public function montantValide($idVisiteur, $mois, $sommeTotale) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 'INSERT INTO fichefrais'
-                . 'VALUES (:unIdVisiteur, :unMois,:uneSommeTotale,now(),VA)'
+                . "VALUES (:unIdVisiteur, :unMois,:uneSommeTotale,now(),'VA')"
         );
 
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->bindParam(':uneSommeTotale', $sommeTotale, PDO::PARAM_STR);
-        $requetePrepare->execute();
+       
+    
+    if($requetePrepare->execute()){
+        echo 'succes';
+        
+        }else{
+            echo 'erreur';
+            print_r($requetePrepare->errorInfo());
+        }
     }
 
+    
+    /*
+     * 
+     * 
+     * UPDATE fichefrais
+*SET montantvalide = '1300',
+	datemodif = now()
+WHERE idvisiteur = 'b34'
+AND mois= '202102';
+     */
 }

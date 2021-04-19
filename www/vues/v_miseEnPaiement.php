@@ -1,6 +1,7 @@
+
 <?php
 /**
- * Vue état des frais
+ * Vue mise en paiement
  *
  * PHP Version 7
  *
@@ -9,6 +10,9 @@
  * @author    beth sefer,Sylvia Cohen
  */
 ?>
+
+<form action="index.php?uc=suivrePaiementFrais&action=mettreEnPaiement 
+              method="post" role="form">
 <hr>
 <div class="panel panel-primary">
     <div class="panel-heading">Fiche de frais du mois 
@@ -66,3 +70,9 @@
         ?>
     </table>
 </div>
+
+<input id="ok" type="submit" value="Mise en paiement" class="btn btn-success" 
+                   role="button">
+
+</form>
+

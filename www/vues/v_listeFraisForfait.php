@@ -6,7 +6,7 @@
  *
  * @category  PPE
  * @package   GSB
- * @author    beth sefer,Tsipora Schvarcz
+ * @author    beth sefer,Sylvia Cohen
  */
 ?>
 <div class="row">    
