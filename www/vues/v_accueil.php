@@ -6,17 +6,14 @@
  *
  * @category  PPE
  * @package   GSB
- * @author    Réseau CERTA <contact@reseaucerta.org>
- * @author    José GIL <jgil@ac-nice.fr>
- * @copyright 2017 Réseau CERTA
- * @license   Réseau CERTA
- * @version   GIT: <0>
- * @link      http://www.reseaucerta.org Contexte « Laboratoire GSB »
+ * @author    beth sefer,Sylvia Cohen
  */
 ?>
 <div id="accueil">
     <h2>
-        Gestion des frais<small> - Visiteur : 
+        
+       
+        <small> <h2 style="color:black">Gestion des frais  </h2>Visiteur : 
             <?php 
             echo $_SESSION['prenom'] . ' ' . $_SESSION['nom']// la vue va afficher le nom et le prenom du visiteur
             ?></small>
@@ -32,6 +29,7 @@
                 </h3>
             </div>
             <div class="panel-body">
+                 
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <a href="index.php?uc=gererFrais&action=saisirFrais"

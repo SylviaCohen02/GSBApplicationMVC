@@ -18,6 +18,7 @@
         depuis le <?php echo $dateModif ?> <br> 
         <strong><u>Montant validé :</u></strong> <?php echo $montantValide ?>
     </div>
+    
 </div>
 <div class="panel panel-info">
     <div class="panel-heading">Eléments forfaitisés</div>
@@ -35,6 +36,7 @@
             <?php
             foreach ($lesFraisForfait as $unFraisForfait) {
                 $quantite = $unFraisForfait['quantite']; ?>
+            
                 <td class="qteForfait"><?php echo $quantite ?> </td>
                 <?php
             }
@@ -65,4 +67,11 @@
         }
         ?>
     </table>
-</div>
+    </div>
+
+     <button class="btn btn-success" type="submit"
+                                name="telechargerPdf" value="telechargerPdf" 
+                                onclick="return confirm('Voulez-vous générer sous pdf?');">Télécharger PDF</button>   
+
+
+

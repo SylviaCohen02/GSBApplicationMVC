@@ -11,7 +11,7 @@
  */
 ?>
 
-<form action="index.php?uc=suivrePaiementFrais&action=mettreEnPaiement 
+<form action="index.php?uc=suivrePaiementFrais&action=mettreEnPaiement" 
               method="post" role="form">
 <hr>
 <div class="panel panel-primary">
@@ -49,6 +49,10 @@
 <div class="panel panel-info">
     <div class="panel-heading">Descriptif des éléments hors forfait - 
         <?php echo $nbJustificatifs ?> justificatifs reçus</div>
+
+
+    <input name="lstMois" type="hidden" id="lstMois" class="form-control" value="<?php echo $moisASelectionner ?>">
+    <input name="lstVisiteurs" type="hidden" id="lstVisiteurs" class="form-control" value="<?php echo $visiteurASelectionner ?>">
     <table class="table table-bordered table-responsive">
         <tr>
             <th class="date">Date</th>
@@ -59,7 +63,8 @@
         foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
             $date = $unFraisHorsForfait['date'];
             $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
-            $montant = $unFraisHorsForfait['montant']; ?>
+            $montant = $unFraisHorsForfait['montant'];
+            ?>
             <tr>
                 <td><?php echo $date ?></td>
                 <td><?php echo $libelle ?></td>
@@ -71,7 +76,7 @@
     </table>
 </div>
 
-<input id="ok" type="submit" value="Mise en paiement" class="btn btn-success" 
+<input id="ok" type="submit" value="Mettre en paiement" class="btn btn-success" 
                    role="button">
 
 </form>

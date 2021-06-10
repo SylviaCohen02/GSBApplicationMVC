@@ -1,10 +1,14 @@
 <?php
 
-/* 
- * 
- * 
- *  
-*/
+/**
+ * Vue Accueil comptable
+ *
+ * PHP Version 7
+ *
+ * @category  PPE
+ * @package   GSB
+ * @author    beth sefer,Sylvia Cohen
+ */
 ?>
 
 <div id="accueil">
@@ -28,7 +32,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <a href="index.php?uc=validerFrais&action=selectionnerVisiteurMois"
-                           class="btn btn-success btn-lg" role="button"><!--Qd elle va cliquer sur le bouton, uc aurait la valeur gererFrais et action aurait la valeur saisirfrais -->
+                           class="btn btn-success btn-lg" role="button">
                             <span class="glyphicon glyphicon-ok"></span>
                             <br>Valider une fiche de frais</a>
                         <a href="index.php?uc=suivrePaiementFrais&action=selectionnerVisiteurMois"

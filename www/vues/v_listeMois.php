@@ -24,10 +24,10 @@
                     foreach ($lesMois as $unMois) {//on parcourt ligne par ligne 
                     //le tableau $lesMois, qu'on renomme en $unMois => plus de lisibilité au code
                         $mois = $unMois['mois'];//['mois']=le mois est mis dans 
-                        //la colonne mois du tableau $unMOis
+                        //la colonne mois du tableau $unMois
                         $numAnnee = $unMois['numAnnee'];
                         $numMois = $unMois['numMois'];
-                        if ($mois == $moisASelectionner) {
+                        if ($mois == $moisASelectionner) {//$mois
                             ?>
                             <option selected value="<?php echo $mois //selected 
                             //value =>  celui qui etait par defaut?>">

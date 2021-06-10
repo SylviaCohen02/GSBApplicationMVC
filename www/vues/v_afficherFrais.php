@@ -1,22 +1,22 @@
 <?php
 /**
- * Vue affichage des frais
+ * Vue Afficher frais
  *
  * PHP Version 7
  *
  * @category  PPE
  * @package   GSB
- * @author    beth sefer, Sylvia Cohen
+ * @author    beth sefer,Sylvia Cohen
  */
 ?>
 
-<div class="row">  
+<div class="row">
     <div class="col-md-4">
-        <form action="index.php?uc=validerFrais&action=corrigerFraisForfait" 
-              method="post" role="form">
+
+        <form action="index.php?uc=validerFrais&action=corrigerFraisForfait" role="form" method="post">
 
 
-            <?php //liste déroulante des visiteurs?>
+            <?php //liste déroulante des visiteurs  ?>
 
             <div class="form-group" style="display: inline-block"> 
                 <label for="lstVisiteurs" accesskey="n">Choisir le visiteur : </label>
@@ -43,13 +43,15 @@
                 </select>
             </div>
 
-            <?php //liste déroulante des mois?>
+            <?php //liste déroulante des mois  ?>
 
-            &nbsp;<div class="form-group" style="display: inline-block">
+            &nbsp;  <div class="form-group" style="display: inline-block">
                 <label for="lstMois" accesskey="n">Mois : </label>
                 <select id="lstMois" name="lstMois" class="form-control">
                     <?php
-                    foreach ($lesMois as $unMois) {
+                    foreach ($lesMois as $unMois) {//on met le mois en local
+                        //(on renomme la variable $lesMois qui vient d'une autre
+                        //classe en $unMois)
                         $mois = $unMois['mois'];
                         $numAnnee = $unMois['numAnnee'];
                         $numMois = $unMois['numMois'];
@@ -57,6 +59,7 @@
                             ?>
                             <option selected value="<?php echo $mois ?>">
                                 <?php echo $numMois . '/' . $numAnnee ?> </option>
+                            <!-- on affiche le mois / l'annee -->
                             <?php
                         } else {
                             ?>
@@ -66,145 +69,135 @@
                         }
                     }
                     ?>    
-
                 </select>
-            </div>  
-
-    </div><br><br><br><br> 
-
-    <div class="row">    
-        <h2 style="color:orange">&nbsp;Valider la fiche de frais</h2>
-        <h3>&nbsp;&nbsp;Eléments forfaitisés</h3>
-        <div class="col-md-4">  
-
-            <fieldset>
-                <?php
-                foreach ($lesFraisForfait as $unFrais) {
-                    $idFrais = $unFrais['idfrais'];
-                    $libelle = htmlspecialchars($unFrais['libelle']);
-                    $quantite = $unFrais['quantite'];
-                    ?>
-                    <div class="form-group">
-                        <label for="idFrais"><?php echo $libelle ?></label>
-                        <input type="text" id="idFrais" 
-                               name="lesFraisF[<?php echo $idFrais ?>]"
-                               size="10" maxlength="5" 
-                               value="<?php echo $quantite ?>" 
-                               class="form-control">
-                    </div>
-                    <?php
-                }
-                ?> 
-                <button class="btn btn-success" type="submit">Corriger</button>       
-                <button class="btn btn-danger" type="reset">Réinitialiser</button>
-            </fieldset>
-
-        </div>
+            </div>
     </div>
-</form>
+</div>
 
-<hr>
+<br>
 
-
-&nbsp; 
-<br><br>
-<form action="index.php?uc=validerFrais&action=corrigerFraisHorsForfaitReporterFHF" 
-      method="post" role="form">
+<!--
+elements forfaitisés-->
 
 
-    <div class="panel panel-info">
-        <div class="panel-heading">Descriptif des éléments hors forfait</div>
+
+<h2 style = "color : orange">Valider la fiche de frais</h2>
+<h3>Eléments forfaitisés</h3> 
+
+<div class="row"> 
 
 
-        <input id="lstVisiteurs" name = "lstVisiteurs" type="hidden" class="form-control" value="<?php echo $visiteurASelectionner ?>">
-        <input id="lstMois" name="lstMois" type="hidden" class="form-control" value="<?php echo $moisASelectionner ?>">
-        <table class="table table-bordered table-responsive">
-            <thead>
-                <tr>
-                    <th class="date">Date</th>
-                    <th class="libelle">Libellé</th>  
-                    <th class="montant">Montant</th>  
-                    <th class="action">&nbsp;</th> 
-                </tr>
-            </thead>  
-            <tbody>
+    <div class="col-md-4"> 
 
-                <?php
-                foreach ($FraisHorsForfait as $unFraisHorsForfait) {
-                    $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
-                    $date = $unFraisHorsForfait['date'];
-                    $montant = $unFraisHorsForfait['montant'];
-                    $idFHF = $unFraisHorsForfait['id'];
-                    ?>    
-                    <tr id="fraisHorsForfait" name="idFraisHorsForfait">
-                <input name= idFraisHF type="hidden" value="<?php echo $idFHF ?>">
-                <td> <input name="date" value="<?php echo $date ?>"></td>
-                <td> <input name="libelle" value="<?php echo $libelle ?>"></td>
-                <td><input name="montant" value="<?php echo $montant ?>"></td>
+        <!-- On va ds l'index -->
+        <fieldset>      
+            <?php
+            foreach ($lesFraisForfait as $unFrais) {
+                //on va boucler sur le tableau lesFraisForfait, foreact => chaque ligne du tableau
+                $idFrais = $unFrais['idfrais']; //on récupère l'idfrais pour chaque ligne du tableau
+                $libelle = htmlspecialchars($unFrais['libelle']);
+                $quantite = $unFrais['quantite'];
+                ?>
+                <div class="form-group">
+                    <label for="idFrais"><?php echo $libelle ?></label><!-- On affiche le libellé -->
+                    <input type="text" id="idFrais"
+                           name="lesFraisF[<?php echo $idFrais ?>]"
+                           size="10" maxlength="5"
+                           value="<?php echo $quantite ?>"
+                           class="form-control">
+                </div>
 
-
-                <td>
-                    <button class="btn btn-success" type="submit" 
-                            name="corriger" value="corriger" >
-                        Corriger</button>
-                    <button class="btn btn-danger" type="reset">
-                        Réinitialiser</button></td> 
-                <td>
-                    <button class="btn btn-success" type="submit"
-                            name="reporter" value="reporter" 
-                            onclick="return confirm('Voulez-vous\n\
-                                       vraiment reporter ce frais?');">Reporter</button>    
-                </td>  
                 <?php
             }
             ?>
-            </tr>
 
-            </tbody>  
-        </table>
 
+            <button  class="btn btn-success" type="edit">Corriger</button>
+            <button class="btn btn-danger" type="reset">Réinitialiser</button>
+
+        </fieldset>
+
+        </form>
     </div>
+</div>
+
+<br> <br> <br>
 
 
-</form>  
+<!--
+element hors forfait-->
 
 
 
-<br><br><br><br><br>
 
-<form action="index.php?uc=validerFrais&action=validerFicheFrais" 
+
+    <form method="post"
+          accept-charset=""action="index.php?uc=validerFrais&action=corrigerFraisHorsForfaitReporterFHF"
+          accesskey=""role="form">  
+       
+<div class="panel panel-info">
+        <div class="panel-heading">Descriptif des éléments hors forfait</div>
+
+
+
+        <table class="table table-bordered table-responsive">
+
+            <tr>
+                <th class="date">Date</th>
+                <th class="libelle">Libellé</th>
+                <th class='montant'>Montant</th>
+                <th></th>
+            </tr>
+            <?php
+            foreach ($lesFraisHorsForfait as $unFraisHorsForfait) {
+                $date = $unFraisHorsForfait['date'];
+                $libelle = htmlspecialchars($unFraisHorsForfait['libelle']);
+                $montant = $unFraisHorsForfait['montant'];
+                $lesFraisHF = $unFraisHorsForfait['id'];
+                ?>
+
+                <input name="lstMois" type="hidden" id="lstMois" class="form-control" value="<?php echo $moisASelectionner ?>">
+                <input name="lstVisiteurs" type="hidden" id="lstVisiteurs" class="form-control" value="<?php echo $visiteurASelectionner ?>">
+
+                <tr>
+                    <td><input name="dateHF" type="text" id="txtDateHF" class="form-control" value="<?php echo $date ?>"></td>
+                    <td><input name="libelleHF" type="text" id="txtLibelleHF" class="form-control" value="<?php echo $libelle ?>"></td>
+                    <td><input name="montantHF" type="text" id="txtMontantHF" class="form-control" value="<?php echo $montant ?>"></td>
+                    <td><input name="lesFraisHF" type="hidden" id="idFHF" class="form-control" value="<?php echo $lesFraisHF ?>"></td>
+                    <th><button class="btn btn-success" type="edit" name="corriger" value="corriger">Corriger</button>
+                        <button class="btn btn-danger" type="reset">Reinitialiser</button>
+                    </th>
+                    <td>
+                        <button class="btn btn-success" type="submit" name="reporter" value="reporter" onclick="return confirm('Voulez-vous vraiment reporter ce frais?');">Reporter</button>    
+                    </td>              
+                </tr>
+
+                <?php
+            }
+            ?>
+        </table>
+    </form>
+
+</div>
+
+
+
+<form action="index.php?uc=validerFrais&action=validerFicheFrais"
       method="post" role="form">
+    <div class="col-md-4">
 
-
-    <div class="col-md-4">  
-        
-        <input id="lstVisiteurs" name = "lstVisiteurs" type="hidden" class="form-control" value="<?php echo $visiteurASelectionner ?>">
-        <input id="lstMois" name="lstMois" type="hidden" class="form-control" value="<?php echo $moisASelectionner ?>">
-
-
-        <label for="nbJ">Nombre de justificatifs:</label>
-        <input name="nbJ" id="nbJ" type="text" size="3">
+        <input id ="lstMois" name="lstMois" type="hidden" id="lstMois" class="form-control" value="<?php echo $moisASelectionner ?>">
+        <input id ="lstVisiteurs" name="lstVisiteurs" type="hidden" id="lstVisiteurs" class="form-control" value="<?php echo $visiteurASelectionner ?>">
+        <label for="nbJustificatifs" >Nombre de Justificatifs : </label>
+        <input  name="nbJustificatifs" type="text" size="3" maxlength="5" 
+                id="nbJustificatifs" value="<?php echo $nbJustificatifs ?>">
         <br><br>
+        <br><br>
+
         <button class="btn btn-success" type="submit">Valider</button>
         <button class="btn btn-danger" type="reset">Réinitialiser</button>
 
     </div>
 
 
-</form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</form>   
