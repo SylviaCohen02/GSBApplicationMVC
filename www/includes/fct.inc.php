@@ -273,6 +273,13 @@ function nbErreurs()
     }
 }
 
+/**
+ * Retourne la liste des douze derniers mois 
+ * @param  $mois Mois sous la forme aaaamm
+ * @return un tableau comportant 3 colonnes, une la date sous la forme 
+     * aaaamm, la seconde comporte l'annee et la 3ème le mois
+ */
+
 function getlesDouzeDerniersMois($mois) 
 {
     $lesMois = array ();
@@ -283,8 +290,8 @@ function getlesDouzeDerniersMois($mois)
         //a deja fait ca ds getLeMoisPrecedent car apres on les utilise
         // dans le array
     
-        $lesMois[] = array(//tableau avec 3 colonnes 
-             'mois' => $mois,
+        $lesMois[] = array(
+             'mois' => $mois, 
              'numMois' => $numMois,
              'numAnnee' => $numAnnee
             
@@ -294,6 +301,11 @@ function getlesDouzeDerniersMois($mois)
     //$lesIdFrais = $this->getLesIdFrais();
 }
 
+/**
+ * Retourne le mois qui précède le mois passé en paramètre
+ * @param  String $mois Mois sous la forme aaaamm
+ * @return un tableau comportant 3 colonnes,
+ */
 function getLeMoisPrecedent($mois)
 {
    $numAnnee = substr($mois, 0, 4);
@@ -310,6 +322,28 @@ function getLeMoisPrecedent($mois)
    }
    return $numAnnee . $numMois;  
 }
+
+/**
+ * Retourne le mois suivant celui passé en paramètre
+ * @param  String $mois Mois sous la forme aaaamm
+ * @return un tableau comportant 3 colonnes,
+ */
+function getMoisSuivant($mois)
+{
+    $numAnnee = substr($mois, 0, 4);
+    $numMois = substr($mois, 4, 2);
+    if ($numMois == '12') {
+        $numMois = '01';
+        $numAnnee++;
+    } else {
+        $numMois++;
+    }
+    if (strlen($numMois) == 1) {
+        $numMois = '0' . $numMois;
+    }
+    return $numAnnee . $numMois;
+}
+ 
 
 ?>
 
