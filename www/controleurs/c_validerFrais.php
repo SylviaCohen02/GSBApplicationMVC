@@ -8,7 +8,6 @@
  * @package   GSB
  * @author    beth sefer,Sylvia Cohen
  */
-
 $idComptable = $_SESSION['idUtilisateur']; // on met le contenu de la colonne idcomptable ds la variable $idcomptable
 $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING); //filtre sur la variable action
 $moisAnnee = getMois(date('d/m/Y'));
@@ -65,6 +64,11 @@ switch ($action) {
         if (lesQteFraisValides($lesFrais)) {
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
             echo "La modification a bien été prise en compte.";
+            $nbModif = $pdo->getNbModif($idVisiteur, $mois);
+
+            $nbModif = $nbModif++;
+            var_dump($nbModif);
+            $pdo->majNbModif($idVisiteur, $mois, $nbModif);
         } else {
             ajouterErreur('Les valeurs des frais doivent être numériques');
             include 'vues/v_erreurs.php';
@@ -93,11 +97,15 @@ switch ($action) {
             } else {
                 $pdo->majFraisHorsForfait($idVisiteur, $mois, $libelle, $dateHF, $montantHF, $lesFraisHF);
                 echo "La modification a bien été prise en compte.";
+                $nbModif = $pdo->getNbModif($idVisiteur, $mois);
+                var_dump($nbModifNv);
+                $nbModifNv = $nbModif++;
+
+                $pdo->majNbModif($idVisiteur, $mois, $nbModifNv);
             }
             $lesFraisHorsForfait = $pdo->getlesFraisHorsForfait($idVisiteur, $mois);
             $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
             include 'vues/v_afficherFrais.php';
-            
         }if (isset($_POST['reporter'])) {
 
             //$idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
@@ -112,27 +120,24 @@ switch ($action) {
             $montant = filter_input(INPUT_POST, 'montantHF', FILTER_SANITIZE_STRING);
             $libelle = filter_input(INPUT_POST, 'libelleHF', FILTER_SANITIZE_STRING);
 
+            $pdo->majLibelle($idVisiteur, $mois, $idFraisHF);
 
+            //cloture la fiche de ce mois
+            $laDerniereFiche = $pdo->getLesInfosFicheFrais($idVisiteur, $mois);
 
-            if (isset($_POST['reporter'])) {
-                $pdo->majLibelle($idVisiteur, $mois, $idFraisHF);
-
-                //cloture la fiche de ce mois
-                $laDerniereFiche = $pdo->getLesInfosFicheFrais($idVisiteur, $mois);
-
-                //cree une nouvelle fiche de frais
-                $mois = getMoisSuivant($mois);
-                //nous dit si ce mois est ds la table fiche frais si ya une fiche frais pr ce mois
-                if ($pdo->estPremierFraisMois($idVisiteur, $mois) == false) {
-                    $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
-                }
-
-                $pdo->creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $date, $montant);
-                include 'vues/v_afficherFrais.php';
-
-                break;
+            //cree une nouvelle fiche de frais
+            $mois = getMoisSuivant($mois);
+            //nous dit si ce mois est ds la table fiche frais si ya une fiche frais pr ce mois
+            if ($pdo->estPremierFraisMois($idVisiteur, $mois) == false) {
+                $pdo->creeNouvellesLignesFrais($idVisiteur, $mois);
             }
+
+            $pdo->creeNouveauFraisHorsForfait($idVisiteur, $mois, $libelle, $date, $montant);
+            include 'vues/v_afficherFrais.php';
+
+            break;
         }
+
     //valide maj etat date et enregistre nbrde justificatif
     case'validerFicheFrais':
 
@@ -151,7 +156,7 @@ switch ($action) {
         $sommeF = $pdo->calculF($idVisiteur, $mois);
         $sommeHF = $pdo->calculHF($idVisiteur, $mois);
         $sommeTotale = $sommeF[0] + $sommeHF;
-       
+
         $pdo->MontantValide($idVisiteur, $mois, $sommeTotale, $nbJustificatifs);
         ?>
         <div class="alert alert-info" role="alert">

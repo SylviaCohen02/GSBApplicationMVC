@@ -106,6 +106,13 @@
                                     Suivre le paiement d'une fiche de frais
                                 </a>
                             </li>
+                             
+                            <li <?php if ($uc == 'suivrePaiementFrais') { ?>class="active"<?php } ?>>
+                                <a href="index.php?uc=consulterEtatModif&action=afficherNbModif">
+                                    <spanComptable class="glyphicon glyphicon-signal"></spanComptable>
+                                    Consulter l'état des modifications totales des fiches
+                                </a>
+                            </li>
                             <li 
                             <?php if ($uc == 'deconnexion') { ?>class="active"<?php } ?>>
                                 <a href="index.php?uc=deconnexion&action=demandeDeconnexion">

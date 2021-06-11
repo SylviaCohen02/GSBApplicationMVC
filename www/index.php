@@ -1,12 +1,12 @@
 <?php
-/**
- * Vue Liste des mois
+/* Index du projet
  *
  * PHP Version 7
  *
  * @category  PPE
  * @package   GSB
- * @author    Beth Sefer, Sylvia Cohen
+ * @author    Lycée Beth Sefer
+ * @author    Sylvia COHEN
  */
 require_once 'includes/fct.inc.php';//require = > erreur fatale , arrêt de l'exécution du programme, once=> on l'ajoute une seule fois
 				    //fct => fct simples
@@ -44,6 +44,9 @@ case 'validerFrais':
 //comptable
 case 'suivrePaiementFrais':
     include 'controleurs/c_suivrePaiementFrais.php';
+    break;
+case 'consulterEtatModif':
+    include 'controleurs/c_consulterEtatModif.php';
     break;
 
 

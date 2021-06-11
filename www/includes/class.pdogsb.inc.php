@@ -675,6 +675,52 @@ class PdoGsb {
         $requetePrepare->execute();
         return $requetePrepare->fetchAll();
     }
+    
+    function majNbModif($idVisiteur, $mois, $nbModifNv){
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                ' UPDATE fichefrais '
+                . ' SET fichefrais.nbModif = :unNbModif'
+                . ' WHERE fichefrais.idvisiteur = :unIdVisiteur'
+                .' AND fichefrais.mois = :unMois'
+                 );
+
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->bindParam (':unNbModif', $nbModifNv, PDO::PARAM_STR);
+        
+        if ($requetePrepare->execute()) {
+            echo 'Succes';
+        } else {
+            echo 'Echec';
+        }
+    }
+
+    function getNbModif($idVisiteur, $mois){
+         $requetePrepare = PdoGsb::$monPdo->prepare(
+                ' SELECT fichefrais.nbModif as nbModification FROM fichefrais'
+                . ' WHERE fichefrais.idvisiteur = :unIdVisiteur'
+                . ' AND fichefrais.mois = :unMois'
+        );
+// on selectionne le nombre de jutificatif  des fiches frais selon idvisiteur et le mois 
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+        $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
+        $requetePrepare->execute();
+        $laLigne = $requetePrepare->fetch();
+        return $laLigne['nbModification'];
+   }
+   
+   function getLeNbTotalModif(){
+       $requetePrepare = PdoGSB::$monPdo->prepare(
+                ' SELECT SUM(fichefrais.nbModif)'
+                . ' FROM fichefrais'
+                
+        );
+       
+        $requetePrepare->execute();
+        $nbTotalModif = $requetePrepare->fetch()[0];
+         
+        return $nbTotalModif;
+   }
 
     /**
      * if($requetePrepare->execute()){

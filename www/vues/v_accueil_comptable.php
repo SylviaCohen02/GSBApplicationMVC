@@ -39,6 +39,10 @@
                            class="btn btn-primary  btn-lg" role="button">
                              <span class="glyphicon glyphicon-euro"></span>
                             <br>Suivre le paiement d'une fiche de frais</a>
+                        <a href="index.php?uc=consulterEtatModif&action=afficherNbModif"
+                           class="btn btn-primary  btn-lg" role="button">
+                             <span class="glyphicon glyphicon-signal"></span>
+                             <br>Consulter l'état des modifications totales des fiches </a>
                     </div>
                 </div>
             </div>
