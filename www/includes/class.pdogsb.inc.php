@@ -73,7 +73,6 @@ class PdoGsb {
                 . 'FROM visiteur '
                 . 'WHERE visiteur.login = :unLogin AND visiteur.mdp = :unMdp'
         );
-// elle nous renvoi nom et prenom qui correspond au mdp et login
         $requetePrepare->bindParam(':unLogin', $login, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMdp', $mdp, PDO::PARAM_STR);
         $requetePrepare->execute();
@@ -238,9 +237,7 @@ class PdoGsb {
             $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
             $requetePrepare->bindParam(':idFrais', $unIdFrais, PDO::PARAM_STR);
             $requetePrepare->execute();
-
         }
-        
     }
 
     public function majFraisHorsForfait($idVisiteur, $mois, $libelle, $date, $montant, $lesFraisHF) {
@@ -675,19 +672,19 @@ class PdoGsb {
         $requetePrepare->execute();
         return $requetePrepare->fetchAll();
     }
-    
-    function majNbModif($idVisiteur, $mois, $nbModifNv){
+
+    function majNbModif($idVisiteur, $mois, $nbModifNv) {
         $requetePrepare = PdoGSB::$monPdo->prepare(
                 ' UPDATE fichefrais '
                 . ' SET fichefrais.nbModif = :unNbModif'
                 . ' WHERE fichefrais.idvisiteur = :unIdVisiteur'
-                .' AND fichefrais.mois = :unMois'
-                 );
+                . ' AND fichefrais.mois = :unMois'
+        );
 
         $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
-        $requetePrepare->bindParam (':unNbModif', $nbModifNv, PDO::PARAM_STR);
-        
+        $requetePrepare->bindParam(':unNbModif', $nbModifNv, PDO::PARAM_STR);
+
         if ($requetePrepare->execute()) {
             echo 'Succes';
         } else {
@@ -695,8 +692,8 @@ class PdoGsb {
         }
     }
 
-    function getNbModif($idVisiteur, $mois){
-         $requetePrepare = PdoGsb::$monPdo->prepare(
+    function getNbModif($idVisiteur, $mois) {
+        $requetePrepare = PdoGsb::$monPdo->prepare(
                 ' SELECT fichefrais.nbModif as nbModification FROM fichefrais'
                 . ' WHERE fichefrais.idvisiteur = :unIdVisiteur'
                 . ' AND fichefrais.mois = :unMois'
@@ -706,21 +703,62 @@ class PdoGsb {
         $requetePrepare->bindParam(':unMois', $mois, PDO::PARAM_STR);
         $requetePrepare->execute();
         $laLigne = $requetePrepare->fetch();
+
+
         return $laLigne['nbModification'];
-   }
-   
-   function getLeNbTotalModif(){
-       $requetePrepare = PdoGSB::$monPdo->prepare(
+    }
+
+    function getLeNbTotalModif() {
+        $requetePrepare = PdoGSB::$monPdo->prepare(
                 ' SELECT SUM(fichefrais.nbModif)'
                 . ' FROM fichefrais'
-                
         );
-       
+
         $requetePrepare->execute();
         $nbTotalModif = $requetePrepare->fetch()[0];
-         
+
         return $nbTotalModif;
-   }
+    }
+
+    function getLeNbTotalModifVisiteur($idVisiteur) {
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                ' SELECT SUM(fichefrais.nbModif)'
+                . ' FROM fichefrais'
+                . ' WHERE idvisiteur= :unIdVisiteur'
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+
+        $requetePrepare->execute();
+        $nbTotalModifVisiteur = $requetePrepare->fetch()[0];
+
+        return $nbTotalModifVisiteur;
+    }
+
+    function getPrenomVisiteur($idVisiteur) {
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                ' SELECT prenom as prenom '
+                . ' FROM visiteur'
+                . ' WHERE id= :unIdVisiteur'
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+
+        $requetePrepare->execute();
+        $laLigne = $requetePrepare->fetch();
+        return $laLigne['prenom'];
+    }
+
+    function getNomVisiteur($idVisiteur) {
+        $requetePrepare = PdoGSB::$monPdo->prepare(
+                ' SELECT nom as nom '
+                . ' FROM visiteur'
+                . ' WHERE id= :unIdVisiteur'
+        );
+        $requetePrepare->bindParam(':unIdVisiteur', $idVisiteur, PDO::PARAM_STR);
+
+        $requetePrepare->execute();
+        $laLigne = $requetePrepare->fetch();
+        return $laLigne['nom'];
+    }
 
     /**
      * if($requetePrepare->execute()){

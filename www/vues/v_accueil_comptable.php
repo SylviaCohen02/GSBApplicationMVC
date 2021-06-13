@@ -43,6 +43,7 @@
                            class="btn btn-primary  btn-lg" role="button">
                              <span class="glyphicon glyphicon-signal"></span>
                              <br>Consulter l'état des modifications totales des fiches </a>
+                      
                     </div>
                 </div>
             </div>

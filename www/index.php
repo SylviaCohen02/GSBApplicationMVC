@@ -48,6 +48,9 @@ case 'suivrePaiementFrais':
 case 'consulterEtatModif':
     include 'controleurs/c_consulterEtatModif.php';
     break;
+case 'consulterEtatModifVisiteur':
+    include 'controleurs/c_consulterEtatModifVisiteur.php';
+    break;
 
 
 case 'deconnexion':

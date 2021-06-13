@@ -15,8 +15,17 @@
          </div>
     <div class="panel-body">
          
-         <h6> Les comptables ont effectué <?php echo $nbTotal ?> corrections sur l'ensemble des fiches de frais </h6>
-
+        <p> Les comptables ont effectué <?php echo $nbTotal ?> corrections sur l'ensemble des fiches de frais </p>
+         <br>
+         
     </div>
     
 </div>
+
+<form action="index.php?uc=consulterEtatModif&action=selectionnerVisiteur" role="form" method="post">
+    <p>Voulez vous connaitre le nombre de corrections effectuées sur les fiches de frais d'un visiteur donné?</p>
+    
+    <button class="btn btn-success" type="submit">Oui</button>
+                <button class="btn btn-danger" type="reset">Non</button>
+            
+</form>

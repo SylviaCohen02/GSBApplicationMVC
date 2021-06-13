@@ -65,10 +65,13 @@ switch ($action) {
             $pdo->majFraisForfait($idVisiteur, $mois, $lesFrais);
             echo "La modification a bien été prise en compte.";
             $nbModif = $pdo->getNbModif($idVisiteur, $mois);
-
-            $nbModif = $nbModif++;
-            var_dump($nbModif);
+            $nbModif += 1; //j'avais mis $nbModif= $mnModif++;
             $pdo->majNbModif($idVisiteur, $mois, $nbModif);
+            
+            //increnmente le nb de modif des frais pr un visiteur donne
+            //$nbModifVisiteur = $pdo->getNbModifVisiteur($idVisiteur);
+            //$nbModifVisiteur += 1;
+            //$majNbModif = $pdo->majNbModifVisiteur($idVisiteur, $nbModif);
         } else {
             ajouterErreur('Les valeurs des frais doivent être numériques');
             include 'vues/v_erreurs.php';
@@ -98,14 +101,17 @@ switch ($action) {
                 $pdo->majFraisHorsForfait($idVisiteur, $mois, $libelle, $dateHF, $montantHF, $lesFraisHF);
                 echo "La modification a bien été prise en compte.";
                 $nbModif = $pdo->getNbModif($idVisiteur, $mois);
-                var_dump($nbModifNv);
-                $nbModifNv = $nbModif++;
-
+                $nbModifNv += 1;
                 $pdo->majNbModif($idVisiteur, $mois, $nbModifNv);
+
+                $nbModifVisiteur = $pdo->getNbModifVisiteur($idVisiteur);
+                $nbModifVisiteur += 1;
+                $majNbModif = $pdo->majNbModifVisiteur($idVisiteur, $nbModif);
             }
             $lesFraisHorsForfait = $pdo->getlesFraisHorsForfait($idVisiteur, $mois);
             $lesFraisForfait = $pdo->getLesFraisForfait($idVisiteur, $mois);
             include 'vues/v_afficherFrais.php';
+            
         }if (isset($_POST['reporter'])) {
 
             //$idVisiteur = filter_input(INPUT_POST, 'lstVisiteurs', FILTER_SANITIZE_STRING);
